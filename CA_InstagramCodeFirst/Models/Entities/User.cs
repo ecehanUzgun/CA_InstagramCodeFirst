@@ -13,5 +13,6 @@ namespace CA_InstagramCodeFirst.Models.Entities
         public string Password { get; set; }
         public List<Photo> Photos { get; set; }
         public List<Message> Messages { get; set; }
+        public List<PhotoComment> PhotoComments { get; set; }
     }
 }
