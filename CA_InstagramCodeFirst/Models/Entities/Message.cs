@@ -10,5 +10,7 @@ namespace CA_InstagramCodeFirst.Models.Entities
     {
         public int ID { get; set; }
         public string UserMessage { get; set; }
+        public User SenderId { get; set; }
+        public User User { get; set; }
     }
 }

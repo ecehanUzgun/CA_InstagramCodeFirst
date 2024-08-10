@@ -14,7 +14,7 @@ namespace CA_InstagramCodeFirst.Models.Context
         //Photos
         public DbSet<Photo> Photos { get; set; }
         //PhotoComments
-        //public DbSet<PhotoComment> PhotoComments { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -44,9 +44,6 @@ namespace CA_InstagramCodeFirst.Models.Context
             modelBuilder.Entity<UserProfile>().Property(x => x.Lastname).HasMaxLength(50);
             modelBuilder.Entity<UserProfile>().Property(x => x.PhoneNumber).HasMaxLength(11); //char(11)
             modelBuilder.Entity<UserProfile>().Property(x => x.Email).HasMaxLength(50);
-
-            //PhotoComment Custom Properties
-            //modelBuilder.Entity<PhotoComment>().Property(x => x.Comment).HasMaxLength(500);
 
             //Message Custom Properties
             modelBuilder.Entity<Message>().Property(x => x.UserMessage).HasMaxLength(1000);

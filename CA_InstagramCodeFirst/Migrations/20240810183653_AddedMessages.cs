@@ -11,9 +11,6 @@ namespace CA_InstagramCodeFirst.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "PhotoComments");
-
             migrationBuilder.CreateTable(
                 name: "Messages",
                 columns: table => new
@@ -31,9 +28,6 @@ namespace CA_InstagramCodeFirst.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Messages");
-
             migrationBuilder.CreateTable(
                 name: "PhotoComments",
                 columns: table => new
