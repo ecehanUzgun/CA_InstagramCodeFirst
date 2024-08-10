@@ -10,11 +10,12 @@ namespace CA_InstagramCodeFirst.Models.Context
         //UserProfiles
         public DbSet<UserProfile> UserProfiles { get; set; }
         //Messages
-
+        public DbSet<Message> Messages { get; set; }
         //Photos
         public DbSet<Photo> Photos { get; set; }
         //PhotoComments
-        public DbSet<PhotoComment> PhotoComments { get; set; }
+        //public DbSet<PhotoComment> PhotoComments { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             string connectionString = "server=localhost;database=InstagramCodeFirstDB;Trusted_Connection=True;TrustServerCertificate=true;";
@@ -45,7 +46,11 @@ namespace CA_InstagramCodeFirst.Models.Context
             modelBuilder.Entity<UserProfile>().Property(x => x.Email).HasMaxLength(50);
 
             //PhotoComment Custom Properties
-            modelBuilder.Entity<PhotoComment>().Property(x => x.Comment).HasMaxLength(500);
+            //modelBuilder.Entity<PhotoComment>().Property(x => x.Comment).HasMaxLength(500);
+
+            //Message Custom Properties
+            modelBuilder.Entity<Message>().Property(x => x.UserMessage).HasMaxLength(1000);
+
             base.OnModelCreating(modelBuilder);
         }
     }

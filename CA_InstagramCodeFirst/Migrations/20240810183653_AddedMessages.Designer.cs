@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CA_InstagramCodeFirst.Migrations
 {
     [DbContext(typeof(ProjectContext))]
-    [Migration("20240810175251_AddedPhotoComments")]
-    partial class AddedPhotoComments
+    [Migration("20240810183653_AddedMessages")]
+    partial class AddedMessages
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,24 @@ namespace CA_InstagramCodeFirst.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("CA_InstagramCodeFirst.Models.Entities.Message", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<string>("UserMessage")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Messages");
+                });
 
             modelBuilder.Entity("CA_InstagramCodeFirst.Models.Entities.Photo", b =>
                 {
@@ -54,37 +72,6 @@ namespace CA_InstagramCodeFirst.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Photos");
-                });
-
-            modelBuilder.Entity("CA_InstagramCodeFirst.Models.Entities.PhotoComment", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
-                    b.Property<string>("Comment")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<int>("PhotoId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("PublishedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("PhotoId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("PhotoComments");
                 });
 
             modelBuilder.Entity("CA_InstagramCodeFirst.Models.Entities.User", b =>
@@ -155,34 +142,8 @@ namespace CA_InstagramCodeFirst.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("CA_InstagramCodeFirst.Models.Entities.PhotoComment", b =>
-                {
-                    b.HasOne("CA_InstagramCodeFirst.Models.Entities.Photo", "Photo")
-                        .WithMany("PhotoComments")
-                        .HasForeignKey("PhotoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CA_InstagramCodeFirst.Models.Entities.User", "User")
-                        .WithMany("PhotoComments")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Photo");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("CA_InstagramCodeFirst.Models.Entities.Photo", b =>
-                {
-                    b.Navigation("PhotoComments");
-                });
-
             modelBuilder.Entity("CA_InstagramCodeFirst.Models.Entities.User", b =>
                 {
-                    b.Navigation("PhotoComments");
-
                     b.Navigation("Photos");
                 });
 #pragma warning restore 612, 618
