@@ -30,17 +30,17 @@ namespace CA_InstagramCodeFirst.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<int?>("UserID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserMessage")
+                    b.Property<string>("MessageContent")
                         .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
+                    b.Property<int>("SenderId")
+                        .HasColumnType("int");
+
                     b.HasKey("ID");
 
-                    b.HasIndex("UserID");
+                    b.HasIndex("SenderId");
 
                     b.ToTable("Messages");
                 });
@@ -166,9 +166,13 @@ namespace CA_InstagramCodeFirst.Migrations
 
             modelBuilder.Entity("CA_InstagramCodeFirst.Models.Entities.Message", b =>
                 {
-                    b.HasOne("CA_InstagramCodeFirst.Models.Entities.User", null)
+                    b.HasOne("CA_InstagramCodeFirst.Models.Entities.User", "Sender")
                         .WithMany("Messages")
-                        .HasForeignKey("UserID");
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Sender");
                 });
 
             modelBuilder.Entity("CA_InstagramCodeFirst.Models.Entities.Photo", b =>

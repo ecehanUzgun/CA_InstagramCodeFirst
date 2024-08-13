@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CA_InstagramCodeFirst.Models.Entities
+﻿namespace CA_InstagramCodeFirst.Models.Entities
 {
     public class User
     {
@@ -13,6 +7,6 @@ namespace CA_InstagramCodeFirst.Models.Entities
         public string Password { get; set; }
         public List<Photo> Photos { get; set; }
         public List<Message> Messages { get; set; }
-        public List<PhotoComment> PhotoComments { get; set; }
+        public List<PhotoComment> PhotoComments { get; set; }   
     }
 }

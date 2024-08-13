@@ -46,7 +46,15 @@ namespace CA_InstagramCodeFirst.Models.Context
             modelBuilder.Entity<UserProfile>().Property(x => x.Email).HasMaxLength(50);
 
             //Message Custom Properties
-            modelBuilder.Entity<Message>().Property(x => x.UserMessage).HasMaxLength(1000);
+            modelBuilder.Entity<Message>().Property(x => x.MessageContent).HasMaxLength(1000);
+
+            modelBuilder.Entity<Message>()
+                .HasOne(x => x.Sender)
+                .WithMany(x => x.Messages)
+                .HasForeignKey(x => x.SenderId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+
 
             //PhotoComment Custom Properties
             modelBuilder.Entity<PhotoComment>().Property(x => x.Comment).HasMaxLength(500);
