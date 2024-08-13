@@ -35,6 +35,11 @@ namespace CA_InstagramCodeFirst.Models.Context
             modelBuilder.Entity<User>().Property(x => x.Username).HasMaxLength(50);
             modelBuilder.Entity<User>().Property(x => x.Password).HasMaxLength(50);
 
+            modelBuilder.Entity<User>()
+                .HasOne(x => x.UserProfile)
+                .WithOne(x => x.User)
+                .HasForeignKey<User>(x => x.ID);
+
             //Photo Custom Properties
             modelBuilder.Entity<Photo>().Property(x => x.PhotoPath).HasMaxLength(255);
             modelBuilder.Entity<Photo>().Property(x => x.Title).HasMaxLength(500);
@@ -54,12 +59,17 @@ namespace CA_InstagramCodeFirst.Models.Context
                 .HasForeignKey(x => x.SenderId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-
+            //modelBuilder.Entity<Message>()
+            //    .HasOne(x => x.Receiver)
+            //    .WithMany(x => x.Messages)
+            //    .HasForeignKey(x => x.ReceiverId)
+            //    .OnDelete(DeleteBehavior.NoAction);
 
             //PhotoComment Custom Properties
-            modelBuilder.Entity<PhotoComment>().Property(x => x.Comment).HasMaxLength(500);
+            modelBuilder.Entity<PhotoComment>().HasOne(x => x.User).WithMany(x => x.PhotoComments).HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.NoAction);
 
             base.OnModelCreating(modelBuilder);
         }
     }
 }
+//RAPOR veritabanından excele buluta buluttan rapor vericez

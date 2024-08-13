@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CA_InstagramCodeFirst.Migrations
 {
     [DbContext(typeof(ProjectContext))]
-    [Migration("20240813113757_Initial")]
-    partial class Initial
+    [Migration("20240813135200_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,10 +38,15 @@ namespace CA_InstagramCodeFirst.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
+                    b.Property<int>("ReceiverId")
+                        .HasColumnType("int");
+
                     b.Property<int>("SenderId")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("ReceiverId");
 
                     b.HasIndex("SenderId");
 
@@ -89,8 +94,7 @@ namespace CA_InstagramCodeFirst.Migrations
 
                     b.Property<string>("Comment")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PhotoId")
                         .HasColumnType("int");
@@ -113,15 +117,15 @@ namespace CA_InstagramCodeFirst.Migrations
             modelBuilder.Entity("CA_InstagramCodeFirst.Models.Entities.User", b =>
                 {
                     b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("UserProfileId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Username")
                         .IsRequired()
@@ -162,6 +166,9 @@ namespace CA_InstagramCodeFirst.Migrations
                         .HasMaxLength(11)
                         .HasColumnType("nvarchar(11)");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("ID");
 
                     b.ToTable("UserProfiles");
@@ -169,11 +176,19 @@ namespace CA_InstagramCodeFirst.Migrations
 
             modelBuilder.Entity("CA_InstagramCodeFirst.Models.Entities.Message", b =>
                 {
+                    b.HasOne("CA_InstagramCodeFirst.Models.Entities.User", "Receiver")
+                        .WithMany()
+                        .HasForeignKey("ReceiverId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("CA_InstagramCodeFirst.Models.Entities.User", "Sender")
                         .WithMany("Messages")
                         .HasForeignKey("SenderId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.Navigation("Receiver");
 
                     b.Navigation("Sender");
                 });
@@ -200,12 +215,23 @@ namespace CA_InstagramCodeFirst.Migrations
                     b.HasOne("CA_InstagramCodeFirst.Models.Entities.User", "User")
                         .WithMany("PhotoComments")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Photo");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CA_InstagramCodeFirst.Models.Entities.User", b =>
+                {
+                    b.HasOne("CA_InstagramCodeFirst.Models.Entities.UserProfile", "UserProfile")
+                        .WithOne("User")
+                        .HasForeignKey("CA_InstagramCodeFirst.Models.Entities.User", "ID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserProfile");
                 });
 
             modelBuilder.Entity("CA_InstagramCodeFirst.Models.Entities.Photo", b =>
@@ -220,6 +246,12 @@ namespace CA_InstagramCodeFirst.Migrations
                     b.Navigation("PhotoComments");
 
                     b.Navigation("Photos");
+                });
+
+            modelBuilder.Entity("CA_InstagramCodeFirst.Models.Entities.UserProfile", b =>
+                {
+                    b.Navigation("User")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
